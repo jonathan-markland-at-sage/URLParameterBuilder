@@ -13,7 +13,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_one_parameter_when_condition_true()
+        public void Test_WhenTrueInclude_adding_one_parameter_when_condition_true()
         {
             var requestUrl =
                 RequestUrl("")
@@ -24,7 +24,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_one_parameter_when_condition_false()
+        public void Test_WhenTrueInclude_adding_one_parameter_when_condition_false()
         {
             var requestUrl =
                 RequestUrl("")
@@ -35,7 +35,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_two_parameters_when_both_true()
+        public void Test_WhenTrueInclude_adding_two_parameters_when_both_true()
         {
             var requestUrl =
                 RequestUrl("")
@@ -47,7 +47,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_two_parameters_when_first_false()
+        public void Test_WhenTrueInclude_adding_two_parameters_when_first_false()
         {
             var requestUrl =
                 RequestUrl("")
@@ -59,7 +59,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_two_with_lambda_function()
+        public void Test_WhenTrueInclude_adding_two_with_lambda_function()
         {
             var lettersString = "ABC";
 
@@ -73,7 +73,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_two_parameters_with_a_non_empty_path_part()
+        public void Test_WhenTrueInclude_adding_two_parameters_with_a_non_empty_path_part()
         {
             var requestUrl =
                 RequestUrl("/v1/something")
@@ -85,7 +85,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_where_we_always_add_one_parameter()
+        public void Test_With_where_we_always_add_one_parameter()
         {
             var requestUrl =
                 RequestUrl("/v1/something")
@@ -96,7 +96,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_where_we_always_add_two_parameters()
+        public void Test_With_where_we_always_add_two_parameters()
         {
             var requestUrl =
                 RequestUrl("/v1/something")
@@ -108,7 +108,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_nullable_integer_that_is_null()
+        public void Test_MaybeWith_adding_nullable_integer_that_is_null()
         {
             int? getNullInt()
             {
@@ -124,7 +124,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_nullable_integer_that_is_12345()
+        public void Test_MaybeWith_adding_nullable_integer_that_is_12345()
         {
             int? getInt()
             {
@@ -140,7 +140,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_adding_null_string_throws_exception()
+        public void Test_With_adding_null_string_throws_exception()
         {
             Assert.Throws<System.ArgumentNullException>(() => 
             {
@@ -152,25 +152,23 @@ namespace Tests
             });
         }
 
-        /*
-        [Test]
+        /* [Test]
         public void Test_example()
         {
             var requestHeaders = RequestHelper.BuildDefaultRequestHeaders();
 
             var requestUrl =
-                RequestUrl($"/v1/accounts/{accountId}/product-instances")
-                    .If(businessId != null).Add("businessId", businessId)
-                    .If(productLicenseId != null).Add("productLicenseId", productLicenseId)
-                    .If(productType != null).Add("productType", productType)
-                    .If(page != null).Add("page", page)
-                    .If(itemsPerPage != null).Add("page-items", itemsPerPage)
-                    .If(includeSoftDeleted).Add("includeSoftDeleted", "true")
+                RequestUrl($"/v1/accounts/12345/product-instances")
+                    .MaybeWith("businessId", businessId)
+                    .MaybeWith("productLicenseId", productLicenseId)
+                    .MaybeWith("productType", productType)
+                    .MaybeWith("page", page)
+                    .MaybeWith("page-items", itemsPerPage)
+                    .WhenTrueInclude(includeSoftDeleted, "includeSoftDeleted", "true")
                     .ToString();
 
             var response = await client.GetAsync(requestUrl, requestHeaders);
             return await response.ConvertToResponse<IEnumerable<ProductInstance>>();
-        }
-        */
+        } */
     }
 }

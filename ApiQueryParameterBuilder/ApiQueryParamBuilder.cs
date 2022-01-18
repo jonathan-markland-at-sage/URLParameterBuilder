@@ -1,19 +1,15 @@
 ﻿using System;
+using static ApiQueryParameterBuilder.ApiQueryEscaping;
 
 namespace ApiQueryParameterBuilder
 {
     public class ApiQueryParamBuilder
     {
-        private Query _query;
+        private UrlBuilder url;
 
         internal ApiQueryParamBuilder(string pathPart)
         {
-            _query = new Query(pathPart);
-        }
-
-        public ApiQueryParamBuilder2 If(bool condition)
-        {
-            return new ApiQueryParamBuilder2(condition, _query, this);
+            this.url = new UrlBuilder(pathPart);
         }
 
         /// <summary>
@@ -23,7 +19,7 @@ namespace ApiQueryParameterBuilder
         {
             if (stringValue != null)
             {
-                return new ApiQueryParamBuilder2(true, _query, this).Add(paramName, stringValue);
+                return Append(paramName, stringValue);
             }
 
             // It is assumed the caller doesn't know what he's doing.
@@ -95,7 +91,17 @@ namespace ApiQueryParameterBuilder
         /// </summary>
         public override string ToString()
         {
-            return _query.QueryString;
+            return this.url.Url;
+        }
+
+        /// <summary>
+        /// Add a parameter and value pair using appropriate prefix, and inserting '='.
+        /// </summary>
+        private ApiQueryParamBuilder Append(string paramName, string value)
+        {
+            var prefix = (this.url.HasNoParameters) ? "?" : "&";
+            this.url.Append(prefix + EscapedName(paramName) + "=" + EscapedValue(value));
+            return this;
         }
     }
 }
