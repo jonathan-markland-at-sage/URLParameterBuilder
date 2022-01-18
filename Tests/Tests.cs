@@ -139,6 +139,19 @@ namespace Tests
             Assert.AreEqual("/v1/something?integer=12345", requestUrl);
         }
 
+        [Test]
+        public void Test_adding_null_string_throws_exception()
+        {
+            Assert.Throws<System.ArgumentNullException>(() => 
+            {
+                string nullString = null;
+
+                RequestUrl("/v1/something")
+                    .With("string", nullString)
+                    .ToString();
+            });
+        }
+
         /*
         [Test]
         public void Test_example()
