@@ -17,7 +17,7 @@ namespace ApiQueryParameterBuilder
             QueryString = QueryString + s;
         }
 
-        internal bool Empty 
+        internal bool HasNoParameters 
         { 
             get { return QueryString.Length == initialLength; } 
         }

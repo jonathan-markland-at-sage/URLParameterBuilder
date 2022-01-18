@@ -74,6 +74,18 @@ namespace Tests
             Assert.AreEqual("?numbers=123&letters=abc", result);
         }
 
+        [Test]
+        public void Test_adding_two_parameters_with_a_non_empty_path_part()
+        {
+            var builder =
+                RequestUrl("/v1/something")
+                    .If(1 < 2).Add("numbers", "123")
+                    .If(3 < 4).Add("letters", "ABC");
+
+            var result = builder.ToString();
+            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", result);
+        }
+
         /*
         [Test]
         public void Test_example()

@@ -29,7 +29,7 @@ namespace ApiQueryParameterBuilder
         {
             if (condition == true)
             {
-                var prefix = (query.QueryString.Length == 0) ? "?" : "&";
+                var prefix = (query.HasNoParameters) ? "?" : "&";
                 query.Append(prefix + EscapedName(paramName) + "=" + EscapedValue(value));
             }
             return apiQueryParamBuilder;
