@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using ApiQueryParameterBuilder;
 using static ApiQueryParameterBuilder.RequestUrlModule;
 
 namespace Tests
