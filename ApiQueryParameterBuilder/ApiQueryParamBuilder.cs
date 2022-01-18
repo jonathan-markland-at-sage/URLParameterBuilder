@@ -54,7 +54,7 @@ namespace ApiQueryParameterBuilder
         /// <summary>
         /// Include this parameter object, converted with ToString().  If the object is null an exception is raised.
         /// </summary>
-        public ApiQueryParamBuilder WithObject(string paramName, object obj)
+        public ApiQueryParamBuilder WithObject(string paramName, object obj) // TODO: test
         {
             if (obj != null)
             {
@@ -69,9 +69,17 @@ namespace ApiQueryParameterBuilder
         /// <summary>
         /// If the object reference is not null, convert the object to a string, and add it as a query parameter.
         /// </summary>
-        public ApiQueryParamBuilder MaybeWithObject(string paramName, object obj)
+        public ApiQueryParamBuilder MaybeWithObject(string paramName, object obj) // TODO: test
         {
             return (obj != null) ? With(paramName, obj.ToString()) : this;
+        }
+
+        /// <summary>
+        /// When the condition is true, add the parameter.
+        /// </summary>
+        public ApiQueryParamBuilder WhenTrueInclude(bool condition, string paramName, string value)
+        {
+            return (condition) ? With(paramName, value) : this;
         }
 
         /// <summary>
@@ -79,11 +87,7 @@ namespace ApiQueryParameterBuilder
         /// </summary>
         public ApiQueryParamBuilder WhenTrueInclude(bool condition, string paramName, Func<string> parameterGetter)
         {
-            if (condition)
-            {
-                return With(paramName, parameterGetter());
-            }
-            return this;
+            return (condition) ? With(paramName, parameterGetter()) : this;
         }
 
         /// <summary>

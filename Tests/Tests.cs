@@ -17,7 +17,7 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("")
-                    .If(1 < 2).Add("numbers", "123")
+                    .WhenTrueInclude(1 < 2, "numbers", "123")
                     .ToString();
 
             Assert.AreEqual("?numbers=123", requestUrl);
@@ -28,7 +28,7 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("")
-                    .If(1 > 2).Add("numbers", "123")
+                    .WhenTrueInclude(1 > 2, "numbers", "123")
                     .ToString();
 
             Assert.AreEqual("", requestUrl);
@@ -39,8 +39,8 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("")
-                    .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC")
+                    .WhenTrueInclude(1 < 2, "numbers", "123")
+                    .WhenTrueInclude(3 < 4, "letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("?numbers=123&letters=ABC", requestUrl);
@@ -51,8 +51,8 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("")
-                    .If(1 > 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC")
+                    .WhenTrueInclude(1 > 2, "numbers", "123")
+                    .WhenTrueInclude(3 < 4, "letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("?letters=ABC", requestUrl);
@@ -65,8 +65,8 @@ namespace Tests
 
             var requestUrl =
                 RequestUrl("")
-                    .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", () => { return lettersString.ToLower(); })
+                    .WhenTrueInclude(1 < 2, "numbers", "123")
+                    .WhenTrueInclude(3 < 4, "letters", () => { return lettersString.ToLower(); })
                     .ToString();
 
             Assert.AreEqual("?numbers=123&letters=abc", requestUrl);
@@ -77,8 +77,8 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("/v1/something")
-                    .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC")
+                    .WhenTrueInclude(1 < 2, "numbers", "123")
+                    .WhenTrueInclude(3 < 4, "letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
