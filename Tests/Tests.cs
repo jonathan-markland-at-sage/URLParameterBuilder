@@ -9,55 +9,54 @@ namespace Tests
         [Test]
         public void Test_adding_nothing()
         {
-            var builder = RequestUrl("");
-            var result = builder.ToString();
-            Assert.AreEqual("", result);
+            var requestUrl = RequestUrl("").ToString();
+            Assert.AreEqual("", requestUrl);
         }
 
         [Test]
         public void Test_adding_one_parameter_when_condition_true()
         {
-            var builder =
+            var requestUrl =
                 RequestUrl("")
-                    .If(1 < 2).Add("numbers", "123");
+                    .If(1 < 2).Add("numbers", "123")
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("?numbers=123", result);
+            Assert.AreEqual("?numbers=123", requestUrl);
         }
 
         [Test]
         public void Test_adding_one_parameter_when_condition_false()
         {
-            var builder =
+            var requestUrl =
                 RequestUrl("")
-                    .If(1 > 2).Add("numbers", "123");
+                    .If(1 > 2).Add("numbers", "123")
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("", result);
+            Assert.AreEqual("", requestUrl);
         }
 
         [Test]
         public void Test_adding_two_parameters_when_both_true()
         {
-            var builder =
+            var requestUrl =
                 RequestUrl("")
                     .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC");
+                    .If(3 < 4).Add("letters", "ABC")
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("?numbers=123&letters=ABC", result);
+            Assert.AreEqual("?numbers=123&letters=ABC", requestUrl);
         }
 
         [Test]
         public void Test_adding_two_parameters_when_first_false()
         {
-            var builder =
+            var requestUrl =
                 RequestUrl("")
                     .If(1 > 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC");
+                    .If(3 < 4).Add("letters", "ABC")
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("?letters=ABC", result);
+            Assert.AreEqual("?letters=ABC", requestUrl);
         }
 
         [Test]
@@ -65,25 +64,25 @@ namespace Tests
         {
             var lettersString = "ABC";
 
-            var builder =
+            var requestUrl =
                 RequestUrl("")
                     .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", () => { return lettersString.ToLower(); });
+                    .If(3 < 4).Add("letters", () => { return lettersString.ToLower(); })
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("?numbers=123&letters=abc", result);
+            Assert.AreEqual("?numbers=123&letters=abc", requestUrl);
         }
 
         [Test]
         public void Test_adding_two_parameters_with_a_non_empty_path_part()
         {
-            var builder =
+            var requestUrl =
                 RequestUrl("/v1/something")
                     .If(1 < 2).Add("numbers", "123")
-                    .If(3 < 4).Add("letters", "ABC");
+                    .If(3 < 4).Add("letters", "ABC")
+                    .ToString();
 
-            var result = builder.ToString();
-            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", result);
+            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
         }
 
         /*
