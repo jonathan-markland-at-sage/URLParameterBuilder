@@ -84,6 +84,61 @@ namespace Tests
             Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
         }
 
+        [Test]
+        public void Test_where_we_always_add_one_parameter()
+        {
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .With("numbers", "123")
+                    .ToString();
+
+            Assert.AreEqual("/v1/something?numbers=123", requestUrl);
+        }
+
+        [Test]
+        public void Test_where_we_always_add_two_parameters()
+        {
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .With("numbers", "123")
+                    .With("letters", "ABC")
+                    .ToString();
+
+            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
+        }
+
+        [Test]
+        public void Test_adding_nullable_integer_that_is_null()
+        {
+            int? getNullInt()
+            {
+                return null;
+            }
+
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .MaybeWith("integer", getNullInt())  // TODO: analogous needed for automatic .ToString()
+                    .ToString();
+
+            Assert.AreEqual("/v1/something", requestUrl);
+        }
+
+        [Test]
+        public void Test_adding_nullable_integer_that_is_12345()
+        {
+            int? getInt()
+            {
+                return 12345;
+            }
+
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .MaybeWith("integer", getInt())
+                    .ToString();
+
+            Assert.AreEqual("/v1/something?integer=12345", requestUrl);
+        }
+
         /*
         [Test]
         public void Test_example()
