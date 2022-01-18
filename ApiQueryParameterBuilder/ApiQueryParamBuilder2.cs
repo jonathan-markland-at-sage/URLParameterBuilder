@@ -30,7 +30,7 @@ namespace ApiQueryParameterBuilder
             if (condition == true)
             {
                 var prefix = (query.QueryString.Length == 0) ? "?" : "&";
-                query.QueryString = query.QueryString + prefix + EscapedName(paramName) + "=" + EscapedValue(value);
+                query.Append(prefix + EscapedName(paramName) + "=" + EscapedValue(value));
             }
             return apiQueryParamBuilder;
         }

@@ -4,6 +4,24 @@ namespace ApiQueryParameterBuilder
 {
     internal class Query
     {
-        internal string QueryString { get; set; } = String.Empty;
+        private int initialLength;
+
+        internal Query(string pathPart)
+        {
+            QueryString = pathPart;
+            initialLength = pathPart.Length;
+        }
+
+        internal void Append(string s)
+        {
+            QueryString = QueryString + s;
+        }
+
+        internal bool Empty 
+        { 
+            get { return QueryString.Length == initialLength; } 
+        }
+
+        internal string QueryString { get; private set; }
     }
 }

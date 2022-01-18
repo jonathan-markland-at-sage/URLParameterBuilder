@@ -3,7 +3,12 @@ namespace ApiQueryParameterBuilder
 {
     public class ApiQueryParamBuilder
     {
-        private Query _query = new Query();
+        private Query _query;
+
+        internal ApiQueryParamBuilder(string pathPart)
+        {
+            _query = new Query(pathPart);
+        }
 
         public ApiQueryParamBuilder2 If(bool condition)
         {

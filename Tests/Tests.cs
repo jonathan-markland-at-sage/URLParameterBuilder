@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using ApiQueryParameterBuilder;
+using static ApiQueryParameterBuilder.RequestUrlModule;
 
 namespace Tests
 {
@@ -8,7 +9,7 @@ namespace Tests
         [Test]
         public void Test_adding_nothing()
         {
-            var builder = new ApiQueryParamBuilder();
+            var builder = RequestUrl("");
             var result = builder.ToString();
             Assert.AreEqual("", result);
         }
@@ -17,7 +18,7 @@ namespace Tests
         public void Test_adding_one_parameter_when_condition_true()
         {
             var builder =
-                new ApiQueryParamBuilder()
+                RequestUrl("")
                     .If(1 < 2).Add("numbers", "123");
 
             var result = builder.ToString();
@@ -28,7 +29,7 @@ namespace Tests
         public void Test_adding_one_parameter_when_condition_false()
         {
             var builder =
-                new ApiQueryParamBuilder()
+                RequestUrl("")
                     .If(1 > 2).Add("numbers", "123");
 
             var result = builder.ToString();
@@ -39,7 +40,7 @@ namespace Tests
         public void Test_adding_two_parameters_when_both_true()
         {
             var builder =
-                new ApiQueryParamBuilder()
+                RequestUrl("")
                     .If(1 < 2).Add("numbers", "123")
                     .If(3 < 4).Add("letters", "ABC");
 
@@ -51,7 +52,7 @@ namespace Tests
         public void Test_adding_two_parameters_when_first_false()
         {
             var builder =
-                new ApiQueryParamBuilder()
+                RequestUrl("")
                     .If(1 > 2).Add("numbers", "123")
                     .If(3 < 4).Add("letters", "ABC");
 
@@ -65,7 +66,7 @@ namespace Tests
             var lettersString = "ABC";
 
             var builder =
-                new ApiQueryParamBuilder()
+                RequestUrl("")
                     .If(1 < 2).Add("numbers", "123")
                     .If(3 < 4).Add("letters", () => { return lettersString.ToLower(); });
 
@@ -80,7 +81,7 @@ namespace Tests
             var requestHeaders = RequestHelper.BuildDefaultRequestHeaders();
 
             var requestUrl =
-                new ApiQueryParamBuilder($"/v1/accounts/{accountId}/product-instances")
+                RequestUrl($"/v1/accounts/{accountId}/product-instances")
                     .If(businessId != null).Add("businessId", businessId)
                     .If(productLicenseId != null).Add("productLicenseId", productLicenseId)
                     .If(productType != null).Add("productType", productType)
