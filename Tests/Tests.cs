@@ -13,34 +13,34 @@ namespace Tests
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_one_parameter_when_condition_true()
+        public void Test_When_Include_adding_one_parameter_when_condition_true()
         {
             var requestUrl =
                 RequestUrl("")
-                    .WhenTrueInclude(1 < 2, "numbers", "123")
+                    .When(1 < 2).Include("numbers", "123")
                     .ToString();
 
             Assert.AreEqual("?numbers=123", requestUrl);
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_one_parameter_when_condition_false()
+        public void Test_When_Include_adding_one_parameter_when_condition_false()
         {
             var requestUrl =
                 RequestUrl("")
-                    .WhenTrueInclude(1 > 2, "numbers", "123")
+                    .When(1 > 2).Include("numbers", "123")
                     .ToString();
 
             Assert.AreEqual("", requestUrl);
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_two_parameters_when_both_true()
+        public void Test_When_Include_adding_two_parameters_when_both_true()
         {
             var requestUrl =
                 RequestUrl("")
-                    .WhenTrueInclude(1 < 2, "numbers", "123")
-                    .WhenTrueInclude(3 < 4, "letters", "ABC")
+                    .When(1 < 2).Include("numbers", "123")
+                    .When(3 < 4).Include("letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("?numbers=123&letters=ABC", requestUrl);
@@ -51,8 +51,8 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("")
-                    .WhenTrueInclude(1 > 2, "numbers", "123")
-                    .WhenTrueInclude(3 < 4, "letters", "ABC")
+                    .When(1 > 2).Include("numbers", "123")
+                    .When(3 < 4).Include("letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("?letters=ABC", requestUrl);
@@ -65,8 +65,8 @@ namespace Tests
 
             var requestUrl =
                 RequestUrl("")
-                    .WhenTrueInclude(1 < 2, "numbers", "123")
-                    .WhenTrueInclude(3 < 4, "letters", () => { return lettersString.ToLower(); })
+                    .When(1 < 2).Include("numbers", "123")
+                    .When(3 < 4).Include("letters", () => { return lettersString.ToLower(); })
                     .ToString();
 
             Assert.AreEqual("?numbers=123&letters=abc", requestUrl);
@@ -77,8 +77,8 @@ namespace Tests
         {
             var requestUrl =
                 RequestUrl("/v1/something")
-                    .WhenTrueInclude(1 < 2, "numbers", "123")
-                    .WhenTrueInclude(3 < 4, "letters", "ABC")
+                    .When(1 < 2).Include("numbers", "123")
+                    .When(3 < 4).Include("letters", "ABC")
                     .ToString();
 
             Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
@@ -168,7 +168,7 @@ namespace Tests
                     .MaybeWith("productType", productType)
                     .MaybeWith("page", page)
                     .MaybeWith("page-items", itemsPerPage)
-                    .WhenTrueInclude(includeSoftDeleted, "includeSoftDeleted", "true")
+                    .When(includeSoftDeleted).Include("includeSoftDeleted", "true")
                     .ToString();
 
             var response = await client.GetAsync(requestUrl, requestHeaders);

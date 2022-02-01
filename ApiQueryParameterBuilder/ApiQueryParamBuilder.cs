@@ -73,17 +73,9 @@ namespace ApiQueryParameterBuilder
         /// <summary>
         /// When the condition is true, add the parameter.
         /// </summary>
-        public ApiQueryParamBuilder WhenTrueInclude(bool condition, string paramName, string value)
+        public ApiQueryParamWhenCondition When(bool condition)
         {
-            return (condition) ? With(paramName, value) : this;
-        }
-
-        /// <summary>
-        /// When the condition is true, add the parameter by calling the function to get the value string.
-        /// </summary>
-        public ApiQueryParamBuilder WhenTrueInclude(bool condition, string paramName, Func<string> parameterGetter)
-        {
-            return (condition) ? With(paramName, parameterGetter()) : this;
+            return new ApiQueryParamWhenCondition(condition, this);
         }
 
         /// <summary>
