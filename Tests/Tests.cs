@@ -6,14 +6,79 @@ namespace Tests
     public class Tests
     {
         [Test]
-        public void Test_adding_nothing()
+        public void Test__appending_no_parameters_to_empty_path_gives_empty_result()
         {
             var requestUrl = RequestUrl("").ToString();
             Assert.AreEqual("", requestUrl);
         }
 
         [Test]
-        public void Test_When_Include_adding_one_parameter_when_condition_true()
+        public void Test__appending_no_parameters_to_a_path()
+        {
+            // There should be no evidence of parameters at all, no spurious "?" for instance.
+
+            var requestUrl = RequestUrl("/v1/something").ToString();
+            Assert.AreEqual("/v1/something", requestUrl);
+        }
+
+
+
+        [Test]
+        public void Test_With__appending_null_string_throws_exception()
+        {
+            // Too much leniency surrounding "null" can mask bugs.
+            // The programmer should have used MaybeWith().
+
+            Assert.Throws<System.ArgumentNullException>(() =>
+            {
+                string nullString = null;
+
+                RequestUrl("/v1/something")
+                    .With("string", nullString)
+                    .ToString();
+            });
+        }
+
+        [Test]
+        public void Test_With__appending_one_parameters_to_empty_path()
+        {
+            // This should just yield the query string
+
+            var requestUrl = 
+                RequestUrl("")
+                    .With("number", "1000")
+                    .ToString();
+
+            Assert.AreEqual("?number=1000", requestUrl);
+        }
+
+        [Test]
+        public void Test_With__appending_one_parameter_to_a_path()
+        {
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .With("number", "1000")
+                    .ToString();
+
+            Assert.AreEqual("/v1/something?number=1000", requestUrl);
+        }
+
+        [Test]
+        public void Test_With__appending_two_parameters_to_a_path()
+        {
+            var requestUrl =
+                RequestUrl("/v1/something")
+                    .With("numbers", "123")
+                    .With("letters", "ABC")
+                    .ToString();
+
+            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
+        }
+
+
+
+        [Test]
+        public void Test_When_Include__appending_one_parameter_when_condition_true()
         {
             var requestUrl =
                 RequestUrl("")
@@ -24,7 +89,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_When_Include_adding_one_parameter_when_condition_false()
+        public void Test_When_Include__we_omit_a_parameter_when_condition_false()
         {
             var requestUrl =
                 RequestUrl("")
@@ -35,7 +100,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_When_Include_adding_two_parameters_when_both_true()
+        public void Test_When_Include__appending_two_parameters_when_both_true()
         {
             var requestUrl =
                 RequestUrl("")
@@ -47,7 +112,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_two_parameters_when_first_false()
+        public void Test_When_Include__appending_two_parameters_when_first_false()
         {
             var requestUrl =
                 RequestUrl("")
@@ -59,7 +124,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_two_with_lambda_function()
+        public void Test_When_Include__appending_two_with_lambda_function()
         {
             var lettersString = "ABC";
 
@@ -73,7 +138,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_WhenTrueInclude_adding_two_parameters_with_a_non_empty_path_part()
+        public void Test_When_Include__appending_two_parameters_with_a_non_empty_path_part()
         {
             var requestUrl =
                 RequestUrl("/v1/something")
@@ -84,31 +149,10 @@ namespace Tests
             Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
         }
 
-        [Test]
-        public void Test_With_where_we_always_add_one_parameter()
-        {
-            var requestUrl =
-                RequestUrl("/v1/something")
-                    .With("numbers", "123")
-                    .ToString();
 
-            Assert.AreEqual("/v1/something?numbers=123", requestUrl);
-        }
 
         [Test]
-        public void Test_With_where_we_always_add_two_parameters()
-        {
-            var requestUrl =
-                RequestUrl("/v1/something")
-                    .With("numbers", "123")
-                    .With("letters", "ABC")
-                    .ToString();
-
-            Assert.AreEqual("/v1/something?numbers=123&letters=ABC", requestUrl);
-        }
-
-        [Test]
-        public void Test_MaybeWith_adding_nullable_integer_that_is_null()
+        public void Test_MaybeWith__appending_nullable_integer_that_is_null()
         {
             int? getNullInt()
             {
@@ -117,14 +161,14 @@ namespace Tests
 
             var requestUrl =
                 RequestUrl("/v1/something")
-                    .MaybeWith("integer", getNullInt())  // TODO: analogous needed for automatic .ToString()
+                    .MaybeWith("integer", getNullInt())
                     .ToString();
 
             Assert.AreEqual("/v1/something", requestUrl);
         }
 
         [Test]
-        public void Test_MaybeWith_adding_nullable_integer_that_is_12345()
+        public void Test_MaybeWith__appending_nullable_integer_that_is_12345()
         {
             int? getInt()
             {
@@ -139,18 +183,6 @@ namespace Tests
             Assert.AreEqual("/v1/something?integer=12345", requestUrl);
         }
 
-        [Test]
-        public void Test_With_adding_null_string_throws_exception()
-        {
-            Assert.Throws<System.ArgumentNullException>(() => 
-            {
-                string nullString = null;
-
-                RequestUrl("/v1/something")
-                    .With("string", nullString)
-                    .ToString();
-            });
-        }
 
 
         /* Example which cannot compile in this context, but gives a flavour of what we might get to.
