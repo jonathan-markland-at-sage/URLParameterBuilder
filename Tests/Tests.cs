@@ -152,8 +152,12 @@ namespace Tests
             });
         }
 
-        /* [Test]
-        public void Test_example()
+
+        /* Example which cannot compile in this context, but gives a flavour of what we might get to.
+
+        [Test]
+        /// <inheritdoc/>
+        public async Task<Response<IEnumerable<Account>>> GetLinkedAccountsAsync(OrganisationClient client, Guid? userId, string userEmail, string platform = null, int? page = null, int? itemsPerPage = null)
         {
             var requestHeaders = RequestHelper.BuildDefaultRequestHeaders();
 
@@ -169,6 +173,8 @@ namespace Tests
 
             var response = await client.GetAsync(requestUrl, requestHeaders);
             return await response.ConvertToResponse<IEnumerable<ProductInstance>>();
-        } */
+        }
+
+        */
     }
 }
